@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import User from "../models/user.model.js";
 
@@ -6,11 +7,14 @@ import generateToken from "../utils/generateToken.js";
 import generateRefreshToken from "../utils/generateRefreshToken.js";
 
 
-// REGISTER
+
+// REGISTER USER
 export const registerUser = async (req, res, next) => {
   try {
+
     const { name, email, password, role } = req.body;
 
+    // Check existing user
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -19,8 +23,10 @@ export const registerUser = async (req, res, next) => {
       throw error;
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create user
     const user = await User.create({
       name,
       email,
@@ -28,14 +34,17 @@ export const registerUser = async (req, res, next) => {
       role,
     });
 
+    // Generate tokens
     const accessToken = generateToken(user._id);
 
     const refreshToken = generateRefreshToken(user._id);
 
+    // Save refresh token
     user.refreshToken = refreshToken;
 
     await user.save();
 
+    // Store refresh token in cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
@@ -46,7 +55,9 @@ export const registerUser = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: "User registered successfully",
+
       accessToken,
+
       user: {
         id: user._id,
         name: user.name,
@@ -54,6 +65,7 @@ export const registerUser = async (req, res, next) => {
         role: user.role,
       },
     });
+
   } catch (error) {
     next(error);
   }
@@ -61,11 +73,14 @@ export const registerUser = async (req, res, next) => {
 
 
 
-// LOGIN
+
+// LOGIN USER
 export const loginUser = async (req, res, next) => {
   try {
+
     const { email, password } = req.body;
 
+    // Find user
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -74,6 +89,7 @@ export const loginUser = async (req, res, next) => {
       throw error;
     }
 
+    // Compare password
     const isPasswordMatched = await bcrypt.compare(
       password,
       user.password
@@ -85,14 +101,17 @@ export const loginUser = async (req, res, next) => {
       throw error;
     }
 
+    // Generate tokens
     const accessToken = generateToken(user._id);
 
     const refreshToken = generateRefreshToken(user._id);
 
+    // Save refresh token
     user.refreshToken = refreshToken;
 
     await user.save();
 
+    // Send cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
@@ -103,7 +122,9 @@ export const loginUser = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Login successful",
+
       accessToken,
+
       user: {
         id: user._id,
         name: user.name,
@@ -111,6 +132,88 @@ export const loginUser = async (req, res, next) => {
         role: user.role,
       },
     });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+  // GET CURRENT USER
+export const getMe = async (req, res, next) => {
+  try {
+
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+// LOGOUT USER
+export const logoutUser = async (req, res, next) => {
+  try {
+
+    const user = await User.findById(req.user._id);
+
+    user.refreshToken = "";
+
+    await user.save();
+
+    res.clearCookie("refreshToken");
+
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+// REFRESH ACCESS TOKEN
+export const refreshAccessToken = async (req, res, next) => {
+  try {
+
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+
+      const error = new Error("Refresh token missing");
+
+      error.statusCode = 401;
+
+      throw error;
+
+    }
+
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET
+    );
+
+    const user = await User.findById(decoded.userId);
+
+    if (!user || user.refreshToken !== refreshToken) {
+
+      const error = new Error("Invalid refresh token");
+
+      error.statusCode = 401;
+
+      throw error;
+
+    }
+
+    const newAccessToken = generateToken(user._id);
+
+    res.status(200).json({
+      success: true,
+      accessToken: newAccessToken,
+    });
+
   } catch (error) {
     next(error);
   }

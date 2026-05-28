@@ -5,6 +5,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
 import errorMiddleware from "./middleware/error.middleware.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use("/api/v1/auth", authRoutes);
 
 // Error Middleware
 app.use(errorMiddleware);
