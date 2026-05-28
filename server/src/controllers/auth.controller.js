@@ -218,3 +218,17 @@ export const refreshAccessToken = async (req, res, next) => {
     next(error);
   }
 };
+
+// ADMIN TEST ROUTE
+export const adminOnly = async (req, res, next) => {
+  try {
+
+    res.status(200).json({
+      success: true,
+      message: "Welcome Admin",
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
