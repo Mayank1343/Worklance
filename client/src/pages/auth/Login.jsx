@@ -1,4 +1,46 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { loginUser } from "../../features/auth/authSlice";
+
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/reduxHooks";
+
 const Login = () => {
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const { isLoading, error } =
+    useAppSelector((state) => state.auth);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const resultAction = await dispatch(
+      loginUser(formData)
+    );
+
+    if (loginUser.fulfilled.match(resultAction)) {
+      navigate("/dashboard");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-slate-800 p-8 rounded-xl w-[400px]">
@@ -6,23 +48,39 @@ const Login = () => {
           Login
         </h1>
 
-        <form className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           <input
             type="email"
+            name="email"
             placeholder="Enter email"
+            value={formData.email}
+            onChange={handleChange}
             className="w-full p-3 rounded-lg bg-slate-700 outline-none"
           />
 
           <input
             type="password"
+            name="password"
             placeholder="Enter password"
+            value={formData.password}
+            onChange={handleChange}
             className="w-full p-3 rounded-lg bg-slate-700 outline-none"
           />
 
+          {error && (
+            <p className="text-red-400">
+              {error}
+            </p>
+          )}
+
           <button
+            disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg"
           >
-            Login
+            {isLoading ? "Loading..." : "Login"}
           </button>
         </form>
       </div>

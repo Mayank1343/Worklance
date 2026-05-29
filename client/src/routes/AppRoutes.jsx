@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
+import DashboardLayout from "../pages/dashboard/DashboardLayout";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -17,13 +18,15 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
 
         <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <DashboardLayout>
+        <Dashboard />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
       </Routes>
     </BrowserRouter>
   );
