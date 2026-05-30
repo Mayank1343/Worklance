@@ -1,7 +1,6 @@
 import { Navigate } from "react-router-dom";
 
 import { useAppSelector } from "../hooks/reduxHooks";
-
 import AuthLoader from "../components/common/AuthLoader";
 
 const PublicRoute = ({ children }) => {

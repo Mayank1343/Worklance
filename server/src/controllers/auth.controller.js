@@ -11,6 +11,7 @@ import generateRefreshToken from "../utils/generateRefreshToken.js";
 // REGISTER USER
 export const registerUser = async (req, res, next) => {
   try {
+    console.log("REGISTER BODY:", req.body);
 
     const { name, email, password, role } = req.body;
 
@@ -67,8 +68,9 @@ export const registerUser = async (req, res, next) => {
     });
 
   } catch (error) {
-    next(error);
-  }
+  console.error("REGISTER ERROR:", error);
+  next(error);
+}
 };
 
 

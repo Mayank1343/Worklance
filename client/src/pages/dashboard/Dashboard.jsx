@@ -1,38 +1,34 @@
 import { useSelector } from "react-redux";
+import StatCard from "../../components/dashboard/StatCard";
 
 const Dashboard = () => {
-  const { user } = useSelector(
-    (state) => state.auth
-  );
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div>
       <h1 className="text-3xl font-bold">
-        Welcome Back,
-        {user?.name}
+        Welcome Back, {user?.name}
       </h1>
 
-      <div className="mt-6 grid md:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded-xl shadow">
-          <h2>Total Projects</h2>
-          <p className="text-3xl font-bold">
-            0
-          </p>
-        </div>
+      <p className="text-gray-500 mt-2">
+        Role: {user?.role}
+      </p>
 
-        <div className="bg-white p-5 rounded-xl shadow">
-          <h2>Proposals</h2>
-          <p className="text-3xl font-bold">
-            0
-          </p>
-        </div>
+      <div className="grid md:grid-cols-3 gap-4 mt-6">
+        <StatCard
+          title="Projects"
+          value="0"
+        />
 
-        <div className="bg-white p-5 rounded-xl shadow">
-          <h2>Messages</h2>
-          <p className="text-3xl font-bold">
-            0
-          </p>
-        </div>
+        <StatCard
+          title="Proposals"
+          value="0"
+        />
+
+        <StatCard
+          title="Messages"
+          value="0"
+        />
       </div>
     </div>
   );

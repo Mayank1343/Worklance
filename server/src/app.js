@@ -3,39 +3,36 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 
 import errorMiddleware from "./middleware/error.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 
+dotenv.config();
+
 const app = express();
 
+console.log("CLIENT_URL =", process.env.CLIENT_URL);
 
-// Security Middleware
-app.use(helmet());
-
-
-// Logging Middleware
-app.use(morgan("dev"));
-
-
-// Body Parser
-app.use(express.json());
-
-
-// Cookie Parser
-app.use(cookieParser());
-
-
-// CORS Configuration
+// CORS FIRST
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
 
+// Security
+// app.use(helmet());
 
-// Health Check Route
+// Logging
+app.use(morgan("dev"));
+
+// Parsers
+app.use(express.json());
+app.use(cookieParser());
+
+// Health Route
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -45,7 +42,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", authRoutes);
 
-// Error Middleware
 app.use(errorMiddleware);
 
 export default app;
