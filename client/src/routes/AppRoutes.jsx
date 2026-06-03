@@ -11,6 +11,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
+import Profile from "../pages/profile/Profile";
 
 
 const AppRoutes = () => {
@@ -50,6 +51,17 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
+      <Route
+       path="/profile"
+       element={
+        <ProtectedRoute>
+         <DashboardLayout>
+          <Profile />
+        </DashboardLayout>
+        </ProtectedRoute>
+      }
+     />
 
     </Routes>
   );

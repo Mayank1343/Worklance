@@ -5,6 +5,24 @@ const API = axios.create({
   withCredentials: true,
 });
 
+API.interceptors.request.use(
+  (config) => {
+    const token =
+      localStorage.getItem(
+        "accessToken"
+      );
+
+    if (token) {
+      config.headers.Authorization =
+        `Bearer ${token}`;
+    }
+
+    return config;
+  },
+
+  (error) => Promise.reject(error)
+);
+
 API.interceptors.response.use(
   (response) => response,
 
@@ -20,12 +38,19 @@ API.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await API.post("/auth/refresh-token");
+  const response = await API.post(
+    "/auth/refresh-token"
+  );
 
-        return API(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
-      }
+  localStorage.setItem(
+    "accessToken",
+    response.data.accessToken
+  );
+
+  return API(originalRequest);
+} catch (refreshError) {
+  return Promise.reject(refreshError);
+}
     }
 
     return Promise.reject(error);

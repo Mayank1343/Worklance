@@ -12,7 +12,10 @@ import {
 
 const initialState = {
   user: null,
-  accessToken: null,
+  accessToken:
+  localStorage.getItem(
+    "accessToken"
+  ) || null,
   isAuthenticated: false,
   isLoading: false,
   isAuthInitialized: false,
@@ -98,21 +101,21 @@ const authSlice = createSlice({
         state.error = null;
       })
 
-      .addCase(
-        loginUser.fulfilled,
-        (state, action) => {
-          state.isLoading = false;
+      .addCase(loginUser.fulfilled, (state, action) => {
+  state.isLoading = false;
 
-          state.user = action.payload.user;
+  state.user = action.payload.user;
 
-          state.accessToken =
-            action.payload.accessToken;
+  state.accessToken =
+    action.payload.accessToken;
 
-          state.isAuthenticated = true;
+  state.isAuthenticated = true;
 
-          state.error = null;
-        }
-      )
+  localStorage.setItem(
+    "accessToken",
+    action.payload.accessToken
+  );
+})
 
       .addCase(
         loginUser.rejected,
@@ -194,20 +197,15 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
 
-      .addCase(
-        logoutUser.fulfilled,
-        (state) => {
-          state.isLoading = false;
+      .addCase(logoutUser.fulfilled, (state) => {
+  state.user = null;
+  state.accessToken = null;
+  state.isAuthenticated = false;
 
-          state.user = null;
-
-          state.accessToken = null;
-
-          state.isAuthenticated = false;
-
-          state.error = null;
-        }
-      )
+  localStorage.removeItem(
+    "accessToken"
+  );
+})
 
       .addCase(
         logoutUser.rejected,
