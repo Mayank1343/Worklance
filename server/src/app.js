@@ -9,6 +9,9 @@ import errorMiddleware from "./middleware/error.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 
+import projectRoutes
+from "./routes/project.routes.js";
+
 dotenv.config();
 
 const app = express();
@@ -46,6 +49,11 @@ app.use("/api/v1/auth", authRoutes);
 app.use(
   "/api/v1/profile",
   profileRoutes
+);
+
+app.use(
+  "/api/v1/projects",
+  projectRoutes
 );
 
 app.use(errorMiddleware);

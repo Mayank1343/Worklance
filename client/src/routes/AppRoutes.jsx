@@ -13,6 +13,12 @@ import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import Profile from "../pages/profile/Profile";
 
+import Projects
+from "../pages/projects/Projects";
+
+import CreateProject
+from "../pages/projects/CreateProject";
+
 
 const AppRoutes = () => {
   return (
@@ -62,6 +68,24 @@ const AppRoutes = () => {
         </ProtectedRoute>
       }
      />
+
+     <Route
+  path="/projects"
+  element={
+    <ProtectedRoute>
+      <Projects />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/projects/create"
+  element={
+    <ProtectedRoute>
+      <CreateProject />
+    </ProtectedRoute>
+  }
+/>
 
     </Routes>
   );
