@@ -13,6 +13,11 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 
+import Card from "../../components/ui/Card";
+import PageContainer from "../../components/ui/PageContainer";
+import Loader from "../../components/ui/Loader";
+import Button from "../../components/ui/Button";
+
 const ProjectDetails = () => {
   const { id } = useParams();
 
@@ -62,11 +67,7 @@ const ProjectDetails = () => {
   }, [dispatch, id]);
 
   if (isLoading) {
-    return (
-      <div className="p-6">
-        Loading...
-      </div>
-    );
+  return <Loader />;
   }
 
   if (error) {
@@ -86,13 +87,13 @@ const ProjectDetails = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <PageContainer>
 
       <h1 className="text-3xl font-bold mb-6">
         {selectedProject.title}
       </h1>
 
-      <div className="bg-white shadow rounded-lg p-6">
+      <Card className="space-y-5">
 
         <p className="mb-4">
           <span className="font-semibold">
@@ -101,7 +102,15 @@ const ProjectDetails = () => {
           ₹{selectedProject.budget}
         </p>
 
-        <p className="mb-4">
+          <div>
+            <h3 className="text-sm text-gray-500">
+              Budget
+            </h3>
+
+            <p className="text-xl font-semibold">
+              ₹ {selectedProject.budget}
+            </p>
+          </div>
           <span className="font-semibold">
             Status:
           </span>{" "}
@@ -111,9 +120,11 @@ const ProjectDetails = () => {
                 bg-green-100 text-green-700
               "
             >
-              {selectedProject.status}
+              {selectedProject.status
+                .replace("_", " ")
+                .toUpperCase()}
             </span>
-        </p>
+        </Card>
 
         <div className="mb-4">
           <span className="font-semibold">
@@ -125,7 +136,14 @@ const ProjectDetails = () => {
               (skill) => (
                 <span
                   key={skill}
-                  className="bg-gray-200 px-3 py-1 rounded-full text-sm"
+                  className="
+                  bg-blue-100
+                  text-blue-700
+                  px-3
+                  py-1
+                  rounded-full
+                  text-sm
+                "
                 >
                   {skill}
                 </span>
@@ -149,6 +167,10 @@ const ProjectDetails = () => {
             Client Information
           </h2>
 
+          <h2 className="font-semibold mb-3">
+            Posted By
+          </h2>
+
           <p>
             {selectedProject.client?.name}
           </p>
@@ -157,38 +179,40 @@ const ProjectDetails = () => {
             {selectedProject.client?.email}
           </p>
         </div>
-
-        <button
+        
+        <div className="flex gap-3 mt-6">
+        <Button
+          variant="secondary"
           onClick={() => navigate(-1)}
-          className="mt-6 px-4 py-2 bg-gray-800 text-white rounded"
         >
           Back
-        </button>
+        </Button>
 
-      </div>
 
       {
         user?._id ===
           selectedProject?.client?._id && (
           <>
-            <Link
-              to={`/projects/edit/${selectedProject._id}`}
-              className="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded"
-            >
+          <Link
+            to={`/projects/edit/${selectedProject._id}`}
+          >
+            <Button>
               Edit Project
-            </Link>
+            </Button>
+          </Link>
 
-            <button
+            <Button
+              variant="danger"
               onClick={handleDelete}
-              className="bg-red-600 text-white px-4 py-2 rounded ml-2"
             >
               Delete
-            </button>
+            </Button>
           </>
         )
       }
+      </div>
 
-    </div>
+    </PageContainer>
   );
 };
 

@@ -75,19 +75,23 @@ const AppRoutes = () => {
      />
 
      <Route
-      path="/projects"
-      element={
-      <ProtectedRoute>
-        <Projects />
-      </ProtectedRoute>
-     }
+        path="/projects"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Projects />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
       />
 
       <Route
         path="/projects/create"
         element={
           <ProtectedRoute>
+            <DashboardLayout>
             <CreateProject />
+            </DashboardLayout>
           </ProtectedRoute>
         }
       />
