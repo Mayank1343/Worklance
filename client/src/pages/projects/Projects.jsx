@@ -9,6 +9,8 @@ import {
   getProjects,
 } from "../../features/project/projectSlice";
 
+import { Link } from "react-router-dom";
+
 const Projects = () => {
   const dispatch = useAppDispatch();
 
@@ -38,9 +40,10 @@ const Projects = () => {
 
         {projects.map(
           (project) => (
-            <div
-              key={project._id}
-              className="border rounded-xl p-5 shadow"
+            <Link
+                key={project._id}
+                to={`/projects/${project._id}`}
+                className="block border rounded-xl p-5 shadow hover:shadow-lg transition"
             >
               <h2 className="text-xl font-bold">
                 {project.title}
@@ -71,7 +74,7 @@ const Projects = () => {
                 )}
 
               </div>
-            </div>
+            </Link>
           )
         )}
 
@@ -80,5 +83,7 @@ const Projects = () => {
     </div>
   );
 };
+
+
 
 export default Projects;

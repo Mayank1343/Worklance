@@ -19,6 +19,11 @@ from "../pages/projects/Projects";
 import CreateProject
 from "../pages/projects/CreateProject";
 
+import ProjectDetails from "../pages/projects/ProjectDetails";
+
+import EditProject
+from "../pages/projects/EditProject";
+
 
 const AppRoutes = () => {
   return (
@@ -70,22 +75,44 @@ const AppRoutes = () => {
      />
 
      <Route
-  path="/projects"
-  element={
-    <ProtectedRoute>
-      <Projects />
-    </ProtectedRoute>
-  }
-/>
+      path="/projects"
+      element={
+      <ProtectedRoute>
+        <Projects />
+      </ProtectedRoute>
+     }
+      />
 
-<Route
-  path="/projects/create"
-  element={
-    <ProtectedRoute>
-      <CreateProject />
-    </ProtectedRoute>
-  }
-/>
+      <Route
+        path="/projects/create"
+        element={
+          <ProtectedRoute>
+            <CreateProject />
+          </ProtectedRoute>
+        }
+      />
+
+        <Route
+        path="/projects/:id"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ProjectDetails />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/projects/edit/:id"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <EditProject />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
 
     </Routes>
   );

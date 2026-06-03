@@ -28,3 +28,24 @@ export const getProjectByIdAPI =
 
     return response.data;
   };
+
+  export const updateProjectAPI =
+  async (id, projectData) => {
+    const response =
+      await API.put(
+        `/projects/${id}`,
+        projectData
+      );
+
+    return response.data;
+  };
+
+  export const deleteProjectAPI =
+  async (id) => {
+    const response =
+      await API.delete(
+        `/projects/${id}`
+      );
+
+    return response.data;
+  };
