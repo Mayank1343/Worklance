@@ -1,6 +1,5 @@
 import Project from "../models/project.model.js";
 
-
 // CREATE PROJECT
 export const createProject = async (
   req,
@@ -8,6 +7,16 @@ export const createProject = async (
   next
 ) => {
   try {
+    if (
+      req.user.role !==
+      "client"
+    ) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Only clients can create projects",
+      });
+    }
 
     const {
       title,

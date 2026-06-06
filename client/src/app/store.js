@@ -5,11 +5,16 @@ import profileReducer from "../features/profile/profileSlice";
 import projectReducer
 from "../features/project/projectSlice";
 
+import proposalReducer
+from "../features/proposal/proposalSlice";
+
 export const store = configureStore({
+  
   reducer: {
     auth: authReducer,
     profile: profileReducer,
     project: projectReducer,
+    proposal: proposalReducer,
   },
 });
 

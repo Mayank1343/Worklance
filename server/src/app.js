@@ -12,6 +12,9 @@ import profileRoutes from "./routes/profile.routes.js";
 import projectRoutes
 from "./routes/project.routes.js";
 
+import proposalRoutes
+from "./routes/proposal.routes.js";
+
 dotenv.config();
 
 const app = express();
@@ -57,5 +60,10 @@ app.use(
 );
 
 app.use(errorMiddleware);
+
+app.use(
+  "/api/proposals",
+  proposalRoutes
+);
 
 export default app;

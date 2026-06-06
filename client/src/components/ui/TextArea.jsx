@@ -1,4 +1,4 @@
-const Input = ({
+const TextArea = ({
   label,
   className = "",
   ...props
@@ -9,7 +9,7 @@ const Input = ({
         {label}
       </label>
 
-      <input
+      <textarea
         {...props}
         className={`
           w-full
@@ -18,6 +18,7 @@ const Input = ({
           rounded-lg
           px-4
           py-3
+          min-h-[120px]
           focus:outline-none
           focus:ring-2
           focus:ring-blue-500
@@ -28,4 +29,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default TextArea;

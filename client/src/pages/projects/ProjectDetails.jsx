@@ -18,6 +18,19 @@ import PageContainer from "../../components/ui/PageContainer";
 import Loader from "../../components/ui/Loader";
 import Button from "../../components/ui/Button";
 
+import { useState } from "react";
+
+import {
+  createProposal,
+} from "../../features/proposal/proposalSlice";
+
+import Input from "../../components/ui/Input";
+import TextArea from "../../components/ui/TextArea";
+
+import {
+  getProjectProposals,
+} from "../../features/proposal/proposalSlice";
+
 const ProjectDetails = () => {
   const { id } = useParams();
 
@@ -35,6 +48,42 @@ const ProjectDetails = () => {
   const { user } = useAppSelector(
   (state) => state.auth
   );
+
+  const {
+  proposals,
+} = useAppSelector(
+  (state) => state.proposal
+);
+
+  const [proposalData, setProposalData] =
+  useState({
+    coverLetter: "",
+    proposedBudget: "",
+  });
+
+  const handleProposalChange = (
+  e
+  ) => {
+    setProposalData({
+      ...proposalData,
+      [e.target.name]:
+        e.target.value,
+    });
+  };
+
+  const handleProposalSubmit =
+  async (e) => {
+    e.preventDefault();
+
+    await dispatch(
+      createProposal({
+        projectId:
+          selectedProject._id,
+
+        ...proposalData,
+      })
+    );
+  };
 
   const handleDelete =
   async () => {
@@ -66,6 +115,12 @@ const ProjectDetails = () => {
     dispatch(getProjectById(id));
   }, [dispatch, id]);
 
+  useEffect(() => {
+  dispatch(
+    getProjectProposals(id)
+  );
+}, [dispatch, id]);
+
   if (isLoading) {
   return <Loader />;
   }
@@ -92,6 +147,56 @@ const ProjectDetails = () => {
       <h1 className="text-3xl font-bold mb-6">
         {selectedProject.title}
       </h1>
+
+      {
+        user?.role ===
+          "freelancer" && (
+
+          <Card className="mt-6">
+
+            <h2 className="text-xl font-semibold mb-4">
+              Apply for this Project
+            </h2>
+
+            <form
+              onSubmit={
+                handleProposalSubmit
+              }
+              className="space-y-4"
+            >
+
+              <TextArea
+                label="Cover Letter"
+                name="coverLetter"
+                value={
+                  proposalData.coverLetter
+                }
+                onChange={
+                  handleProposalChange
+                }
+              />
+
+              <Input
+                label="Proposed Budget"
+                type="number"
+                name="proposedBudget"
+                value={
+                  proposalData.proposedBudget
+                }
+                onChange={
+                  handleProposalChange
+                }
+              />
+
+              <Button>
+                Submit Proposal
+              </Button>
+
+            </form>
+
+          </Card>
+        )
+      }
 
       <Card className="space-y-5">
 
@@ -208,6 +313,95 @@ const ProjectDetails = () => {
               Delete
             </Button>
           </>
+        )
+      }
+
+      {
+        user?._id ===
+          selectedProject?.client?._id && (
+          <div className="mt-8">
+
+            <h2 className="text-2xl font-bold mb-4">
+              Received Proposals
+            </h2>
+
+            {
+              proposals.length === 0 ? (
+                <p>
+                  No proposals yet
+                </p>
+              ) : (
+                <div className="space-y-4">
+
+                  {proposals.map(
+                    (proposal) => (
+                      <div
+                        key={proposal._id}
+                        className="
+                          border
+                          rounded-lg
+                          p-4
+                          bg-white
+                        "
+                      >
+                        <h3 className="font-bold">
+                          {
+                            proposal
+                              .freelancer
+                              ?.name
+                          }
+                        </h3>
+
+                        <p className="text-sm text-gray-500">
+                          {
+                            proposal
+                              .freelancer
+                              ?.email
+                          }
+                        </p>
+
+                        <p className="mt-2">
+                          <strong>
+                            Budget:
+                          </strong>{" "}
+                          ₹
+                          {
+                            proposal
+                              .proposedBudget
+                          }
+                        </p>
+
+                        <p className="mt-2">
+                          {
+                            proposal
+                              .coverLetter
+                          }
+                        </p>
+
+                        <span
+                          className="
+                            inline-block
+                            mt-3
+                            px-3
+                            py-1
+                            bg-yellow-100
+                            rounded-full
+                            text-sm
+                          "
+                        >
+                          {
+                            proposal.status
+                          }
+                        </span>
+                      </div>
+                    )
+                  )}
+
+                </div>
+              )
+            }
+
+          </div>
         )
       }
       </div>

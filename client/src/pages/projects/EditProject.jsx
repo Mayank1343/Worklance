@@ -15,6 +15,12 @@ import {
   updateProject,
 } from "../../features/project/projectSlice";
 
+import Card from "../../components/ui/Card";
+import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
+import TextArea from "../../components/ui/TextArea";
+import PageContainer from "../../components/ui/PageContainer";
+
 const EditProject = () => {
   const { id } = useParams();
 
@@ -104,61 +110,62 @@ const EditProject = () => {
     };
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
+    <PageContainer>
 
       <h1 className="text-3xl font-bold mb-6">
         Edit Project
       </h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          className="w-full border p-3 rounded"
-        />
+      <p className="text-gray-500 mb-6">
+        Update your project details and save changes.
+      </p>
 
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          className="w-full border p-3 rounded"
-        />
-
-        <input
-          type="number"
-          name="budget"
-          value={formData.budget}
-          onChange={handleChange}
-          className="w-full border p-3 rounded"
-        />
-
-        <input
-          type="text"
-          name="skillsRequired"
-          value={
-            formData.skillsRequired
-          }
-          onChange={handleChange}
-          className="w-full border p-3 rounded"
-        />
-
-        <button
-          disabled={isLoading}
-          className="bg-green-600 text-white px-6 py-3 rounded"
+      <Card className="max-w-3xl mx-auto">
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-5"
         >
-          {isLoading
+        <Input
+            label="Project Title"
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            />
+
+        <TextArea
+        label="Description"
+        name="description"
+        value={formData.description}
+        onChange={handleChange}
+        />
+
+        <Input
+        label="Budget"
+        type="number"
+        name="budget"
+        value={formData.budget}
+        onChange={handleChange}
+        />
+
+        <Input
+        label="Skills Required"
+        type="text"
+        name="skillsRequired"
+        value={formData.skillsRequired}
+        onChange={handleChange}
+        />
+
+        <Button disabled={isLoading}>
+        {isLoading
             ? "Updating..."
             : "Update Project"}
-        </button>
+        </Button>
 
-      </form>
+        </form>
+        </Card>
 
-    </div>
+    </PageContainer>
   );
 };
 

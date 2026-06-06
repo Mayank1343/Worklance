@@ -11,6 +11,12 @@ import {
   createProject,
 } from "../../features/project/projectSlice";
 
+import Card from "../../components/ui/Card";
+import Button from "../../components/ui/Button";
+import PageContainer from "../../components/ui/PageContainer";
+import Input from "../../components/ui/Input";
+import TextArea from "../../components/ui/TextArea";
+
 const CreateProject = () => {
   const dispatch = useAppDispatch();
 
@@ -68,68 +74,62 @@ const CreateProject = () => {
     };
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
+    <PageContainer>
 
       <h1 className="text-3xl font-bold mb-6">
         Create Project
       </h1>
 
+      <Card className="max-w-3xl mx-auto">
       <form
         onSubmit={handleSubmit}
-        className="space-y-4"
+        className="space-y-5"
       >
-        <input
+        <Input
+          label="Project Title"
           type="text"
           name="title"
-          placeholder="Title"
+          placeholder="Build a MERN Website"
           value={formData.title}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
         />
 
-        <textarea
+        <TextArea
+          label="Description"
           name="description"
-          placeholder="Description"
-          value={
-            formData.description
-          }
+          placeholder="Describe your project requirements..."
+          value={formData.description}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
         />
 
-        <input
+        <Input
+          label="Budget"
           type="number"
           name="budget"
-          placeholder="Budget"
+          placeholder="500"
           value={formData.budget}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
         />
 
-        <input
+        <Input
+          label="Skills Required"
           type="text"
           name="skillsRequired"
-          placeholder="React, Node, MongoDB"
-          value={
-            formData.skillsRequired
-          }
+          placeholder="React, Node.js, MongoDB"
+          value={formData.skillsRequired}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
         />
 
-        <button
-          disabled={isLoading}
-          className="bg-blue-600 text-white px-6 py-3 rounded"
-        >
+        <Button disabled={isLoading}>
           {isLoading
             ? "Creating..."
             : "Create Project"}
-        </button>
+        </Button>
 
       </form>
-
-    </div>
-  );
+      </Card>
+    </PageContainer>
+  )
 };
 
 export default CreateProject;
