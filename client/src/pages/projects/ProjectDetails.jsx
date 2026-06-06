@@ -31,6 +31,10 @@ import {
   getProjectProposals,
 } from "../../features/proposal/proposalSlice";
 
+import {
+  updateProposalStatus,
+} from "../../features/proposal/proposalSlice";
+
 const ProjectDetails = () => {
   const { id } = useParams();
 
@@ -109,6 +113,24 @@ const ProjectDetails = () => {
     ) {
       navigate("/projects");
     }
+  };
+
+  const handleStatusUpdate =
+  async (
+    proposalId,
+    status
+  ) => {
+
+    await dispatch(
+      updateProposalStatus({
+        proposalId,
+        status,
+      })
+    );
+
+    dispatch(
+      getProjectProposals(id)
+    );
   };
 
   useEffect(() => {
@@ -393,6 +415,39 @@ const ProjectDetails = () => {
                             proposal.status
                           }
                         </span>
+
+                        {
+                        proposal.status ===
+                          "pending" && (
+
+                          <div className="flex gap-2 mt-3">
+
+                            <Button
+                              onClick={() =>
+                                handleStatusUpdate(
+                                  proposal._id,
+                                  "accepted"
+                                )
+                              }
+                            >
+                              Accept
+                            </Button>
+
+                            <Button
+                              variant="danger"
+                              onClick={() =>
+                                handleStatusUpdate(
+                                  proposal._id,
+                                  "rejected"
+                                )
+                              }
+                            >
+                              Reject
+                            </Button>
+
+                          </div>
+                        )
+                      }
                       </div>
                     )
                   )}

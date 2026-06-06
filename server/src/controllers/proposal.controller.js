@@ -111,3 +111,69 @@ export const getProjectProposals =
       next(error);
     }
   };
+  
+  export const updateProposalStatus =
+  async (
+    req,
+    res,
+    next
+  ) => {
+    try {
+
+      const {
+        status,
+      } = req.body;
+
+      const proposal =
+        await Proposal.findById(
+          req.params.id
+        ).populate("project");
+
+      if (!proposal) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Proposal not found",
+        });
+      }
+
+      // Only project owner can decide
+      if (
+        proposal.project.client.toString() !==
+        req.user._id.toString()
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Not authorized",
+        });
+      }
+
+      proposal.status =
+        status;
+
+      await proposal.save();
+
+      // If accepted, update project
+      if (
+        status === "accepted"
+      ) {
+        await Project.findByIdAndUpdate(
+          proposal.project._id,
+          {
+            status:
+              "in_progress",
+          }
+        );
+      }
+
+      res.status(200).json({
+        success: true,
+        proposal,
+      });
+
+    } catch (error) {
+      next(error);
+    }
+  };
+

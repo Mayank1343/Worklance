@@ -20,3 +20,17 @@ export const createProposalAPI =
 
     return response.data;
   };
+
+  export const updateProposalStatusAPI =
+  async (
+    proposalId,
+    status
+  ) => {
+    const response =
+      await API.put(
+        `/proposals/${proposalId}/status`,
+        { status }
+      );
+
+    return response.data;
+  };

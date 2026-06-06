@@ -5,6 +5,7 @@ import protect from "../middleware/auth.middleware.js";
 import {
   createProposal,
   getProjectProposals,
+  updateProposalStatus,
 } from "../controllers/proposal.controller.js";
 
 const router =
@@ -20,6 +21,12 @@ router.get(
   "/project/:projectId",
   protect,
   getProjectProposals
+);
+
+router.put(
+  "/:id/status",
+  protect,
+  updateProposalStatus
 );
 
 export default router;

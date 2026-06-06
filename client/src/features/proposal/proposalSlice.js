@@ -6,6 +6,7 @@ import {
 import {
   createProposalAPI,
   getProjectProposalsAPI,
+  updateProposalStatusAPI,
 } from "../../api/proposalAPI";
 
 // CREATE PROPOSAL
@@ -136,12 +137,52 @@ const proposalSlice =
             state.error =
               action.payload;
           }
-        );
+        )
+
+        .addCase(
+        updateProposalStatus.fulfilled,
+        (state, action) => {
+
+          state.proposals =
+            state.proposals.map(
+              (proposal) =>
+                proposal._id ===
+                action.payload.proposal._id
+                  ? action.payload.proposal
+                  : proposal
+            );
+        }
+      );
     },
   });
 
 export const {
   resetProposalState,
 } = proposalSlice.actions;
+
+
+export const updateProposalStatus =
+  createAsyncThunk(
+    "proposal/updateProposalStatus",
+
+    async (
+      {
+        proposalId,
+        status,
+      },
+      thunkAPI
+    ) => {
+      try {
+        return await updateProposalStatusAPI(
+          proposalId,
+          status
+        );
+      } catch (error) {
+        return thunkAPI.rejectWithValue(
+          error.response.data.message
+        );
+      }
+    }
+  );
 
 export default proposalSlice.reducer;

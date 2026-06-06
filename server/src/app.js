@@ -49,21 +49,13 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", authRoutes);
 
-app.use(
-  "/api/v1/profile",
-  profileRoutes
-);
+app.use("/api/v1/profile", profileRoutes);
 
-app.use(
-  "/api/v1/projects",
-  projectRoutes
-);
+app.use("/api/v1/projects", projectRoutes);
+
+app.use("/api/v1/proposals", proposalRoutes);
+
 
 app.use(errorMiddleware);
-
-app.use(
-  "/api/proposals",
-  proposalRoutes
-);
 
 export default app;

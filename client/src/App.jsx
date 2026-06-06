@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { getCurrentUser } from "./features/auth/authSlice";
+import { getCurrentUser, initializeAuth,} from "./features/auth/authSlice";
 import AppRoutes from "./routes/AppRoutes";
 
 import { useSelector } from "react-redux";
@@ -12,11 +12,27 @@ function App() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getCurrentUser());
-  }, [dispatch]);
+  const { accessToken } =
+    useSelector(
+      (state) => state.auth
+    );
 
-  return <AppRoutes />;
-}
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(
+        getCurrentUser()
+      );
+    } else {
+      dispatch(
+        initializeAuth()
+      );
+    }
+  }, [
+    dispatch,
+    accessToken,
+  ]);
+
+    return <AppRoutes />;
+  }
 
 export default App;
