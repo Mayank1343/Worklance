@@ -37,7 +37,11 @@ export const clientLinks = [
   {
     label: "Profile",
     path: "/profile"
-  }
+  },
+  {
+    label: "Received Proposals",
+    path: "/client-proposals",
+  },
 ];
 
 export const adminLinks = [
