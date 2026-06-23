@@ -10,6 +10,9 @@ import {
 } from "../../features/proposal/proposalSlice";
 
 import EmptyState from "../../components/ui/EmptyState";
+import Card from "../../components/ui/Card";
+import Loader from "../../components/ui/Loader";
+import PageContainer from "../../components/ui/PageContainer";
 
 const MyProposals = () => {
   const dispatch =
@@ -30,107 +33,159 @@ const MyProposals = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return (
-      <div className="p-6">
-        Loading...
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
     return (
-      <div className="p-6 text-red-500">
-        {error}
-      </div>
+      <PageContainer>
+        <div className="text-red-500">
+          {error}
+        </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <PageContainer>
 
-      <h1 className="text-3xl font-bold mb-6">
-        My Proposals
-      </h1>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold">
+          My Proposals
+        </h1>
+
+        <p className="text-gray-500 mt-2">
+          Track all proposals you've
+          submitted to clients.
+        </p>
+      </div>
 
       {proposals.length === 0 ? (
-        <div className="bg-white p-6 rounded shadow">
+
+        <Card>
           <EmptyState
             title="No Proposals Yet"
-            description="Start applying to projects."
-            />
-        </div>
+            description="Start applying to projects and your proposals will appear here."
+          />
+        </Card>
+
       ) : (
-        <div className="space-y-4">
+
+        <div className="space-y-5">
 
           {proposals.map(
             (proposal) => (
-              <div
+              <Card
                 key={proposal._id}
                 className="
-                  bg-white
+                  rounded-2xl
                   border
-                  rounded-lg
-                  p-5
                   shadow-sm
+                  hover:shadow-md
+                  transition
+                  duration-300
                 "
               >
-                <h2 className="text-lg font-semibold">
-                  {
-                    proposal.project
-                      ?.title
-                  }
-                </h2>
 
-                <p className="mt-2">
-                  Your Budget:
-                  {" "}
-                  ₹
-                  {
-                    proposal.proposedBudget
-                  }
-                </p>
+                <div className="flex justify-between items-start">
 
-                <p className="mt-2">
-                  Project Budget:
-                  {" "}
-                  ₹
-                  {
-                    proposal.project
-                      ?.budget
-                  }
-                </p>
+                  <div>
+                    <h2
+                      className="
+                        text-xl
+                        font-bold
+                        text-gray-900
+                      "
+                    >
+                      {
+                        proposal.project
+                          ?.title
+                      }
+                    </h2>
 
-                <p className="mt-3">
-                  Status:
-                  {" "}
+                    <p className="text-gray-500 mt-1">
+                      Project Budget:
+                      {" "}
+                      ₹
+                      {
+                        proposal.project
+                          ?.budget
+                      }
+                    </p>
+                  </div>
+
                   <span
                     className={
-                      proposal.status ===
-                      "accepted"
-                        ? "text-green-600 font-semibold"
-                        : proposal.status ===
-                          "rejected"
-                        ? "text-red-600 font-semibold"
-                        : "text-yellow-600 font-semibold"
+                      `
+                      px-3
+                      py-1
+                      rounded-full
+                      text-sm
+                      font-medium
+                      ${
+                        proposal.status ===
+                        "accepted"
+                          ? "bg-green-100 text-green-700"
+                          : proposal.status ===
+                            "rejected"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }
+                    `
                     }
                   >
                     {proposal.status}
                   </span>
-                </p>
 
-                <p className="mt-3 text-gray-600">
-                  {
-                    proposal.coverLetter
-                  }
-                </p>
+                </div>
 
-              </div>
+                <div className="mt-5">
+
+                  <p className="font-medium">
+                    Your Proposed Budget
+                  </p>
+
+                  <p
+                    className="
+                      text-2xl
+                      font-bold
+                      text-blue-600
+                      mt-1
+                    "
+                  >
+                    ₹
+                    {
+                      proposal.proposedBudget
+                    }
+                  </p>
+
+                </div>
+
+                <div
+                  className="
+                    mt-5
+                    bg-gray-50
+                    rounded-xl
+                    p-4
+                  "
+                >
+                  <p className="text-gray-700">
+                    {
+                      proposal.coverLetter
+                    }
+                  </p>
+                </div>
+
+              </Card>
             )
           )}
 
         </div>
+
       )}
-    </div>
+
+    </PageContainer>
   );
 };
 
