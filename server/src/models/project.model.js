@@ -39,6 +39,12 @@ const projectSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    assignedFreelancer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
   },
   {
     timestamps: true,

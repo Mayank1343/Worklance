@@ -293,6 +293,35 @@ const ProjectDetails = () => {
           <h2 className="font-semibold mb-2">
             Client Information
           </h2>
+          {
+          selectedProject
+            ?.assignedFreelancer && (
+
+            <div className="border-t pt-4 mt-4">
+
+              <h2 className="font-semibold mb-2">
+                Assigned Freelancer
+              </h2>
+
+              <p>
+                {
+                  selectedProject
+                    .assignedFreelancer
+                    .name
+                }
+              </p>
+
+              <p className="text-gray-600">
+                {
+                  selectedProject
+                    .assignedFreelancer
+                    .email
+                }
+              </p>
+
+            </div>
+          )
+        }
 
           <h2 className="font-semibold mb-3">
             Posted By

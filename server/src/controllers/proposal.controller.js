@@ -159,13 +159,29 @@ export const getProjectProposals =
         status === "accepted"
       ) {
         await Project.findByIdAndUpdate(
+        proposal.project._id,
+        {
+          status: "in_progress",
+
+          assignedFreelancer:
+            proposal.freelancer,
+        }
+      );
+
+      await Proposal.updateMany(
+      {
+        project:
           proposal.project._id,
-          {
-            status:
-              "in_progress",
-          }
-        );
+
+        _id: {
+          $ne: proposal._id,
+        },
+      },
+      {
+        status: "rejected",
       }
+    );
+    }
 
       res.status(200).json({
         success: true,

@@ -57,9 +57,13 @@ export const getProjects = async (
     const projects =
       await Project.find()
         .populate(
-          "client",
-          "name email"
-        )
+        "client",
+        "name email"
+      )
+      .populate(
+        "assignedFreelancer",
+        "name email"
+      )
         .sort({
           createdAt: -1,
         });
@@ -89,7 +93,11 @@ export const getProjectById = async (
       ).populate(
         "client",
         "name email"
-      );
+      )
+      .populate(
+        "assignedFreelancer",
+        "name email"
+      )
 
     if (!project) {
       const error = new Error(
