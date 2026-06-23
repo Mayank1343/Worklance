@@ -174,180 +174,170 @@ import {
     );
   }
 
-  return (
-    <PageContainer>
+return (
+  <PageContainer>
 
-      <h1 className="text-3xl font-bold mb-6">
+    {/* Header */}
+    <div className="mb-8">
+      <h1 className="text-4xl font-bold text-gray-900">
         {selectedProject.title}
       </h1>
 
-      {
-        user?.role ===
-          "freelancer" && (
+      <p className="text-gray-500 mt-2">
+        Project Details & Proposal Management
+      </p>
+    </div>
 
-          <Card className="mt-6">
+    {/* Freelancer Proposal Form */}
+    {user?.role === "freelancer" && (
+      <Card className="mb-8 p-6 rounded-2xl shadow-sm">
+        <h2 className="text-2xl font-semibold mb-5">
+          Apply for this Project
+        </h2>
 
-            <h2 className="text-xl font-semibold mb-4">
-              Apply for this Project
-            </h2>
+        <form
+          onSubmit={handleProposalSubmit}
+          className="space-y-4"
+        >
+          <TextArea
+            label="Cover Letter"
+            name="coverLetter"
+            value={proposalData.coverLetter}
+            onChange={handleProposalChange}
+          />
 
-            <form
-              onSubmit={
-                handleProposalSubmit
-              }
-              className="space-y-4"
-            >
+          <Input
+            label="Proposed Budget"
+            type="number"
+            name="proposedBudget"
+            value={proposalData.proposedBudget}
+            onChange={handleProposalChange}
+          />
 
-              <TextArea
-                label="Cover Letter"
-                name="coverLetter"
-                value={
-                  proposalData.coverLetter
-                }
-                onChange={
-                  handleProposalChange
-                }
-              />
+          <Button>
+            Submit Proposal
+          </Button>
+        </form>
+      </Card>
+    )}
 
-              <Input
-                label="Proposed Budget"
-                type="number"
-                name="proposedBudget"
-                value={
-                  proposalData.proposedBudget
-                }
-                onChange={
-                  handleProposalChange
-                }
-              />
+    {/* Main Project Card */}
+    <Card className="p-8 rounded-2xl shadow-sm">
 
-              <Button>
-                Submit Proposal
-              </Button>
+      {/* Budget & Status */}
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
 
-            </form>
+        <div className="bg-blue-50 rounded-xl p-5">
+          <h3 className="text-sm text-gray-500">
+            Budget
+          </h3>
 
-          </Card>
-        )
-      }
+          <p className="text-3xl font-bold text-blue-700">
+            ₹{selectedProject.budget}
+          </p>
+        </div>
 
-      <Card className="space-y-5">
+        <div className="bg-green-50 rounded-xl p-5">
+          <h3 className="text-sm text-gray-500">
+            Status
+          </h3>
 
-        <p className="mb-4">
-          <span className="font-semibold">
-            Budget:
-          </span>{" "}
-          ₹{selectedProject.budget}
-        </p>
+          <p className="text-xl font-semibold text-green-700">
+            {selectedProject.status
+              .replace("_", " ")
+              .toUpperCase()}
+          </p>
+        </div>
 
-          <div>
-            <h3 className="text-sm text-gray-500">
-              Budget
-            </h3>
+      </div>
 
-            <p className="text-xl font-semibold">
-              ₹ {selectedProject.budget}
-            </p>
-          </div>
-          <span className="font-semibold">
-            Status:
-          </span>{" "}
-            <span
-              className="
-                px-3 py-1 rounded-full
-                bg-green-100 text-green-700
-              "
-            >
-              {selectedProject.status
-                .replace("_", " ")
-                .toUpperCase()}
-            </span>
-        </Card>
+      {/* Skills */}
+      <div className="mb-8">
+        <h2 className="font-semibold mb-3">
+          Skills Required
+        </h2>
 
-        <div className="mb-4">
-          <span className="font-semibold">
-            Skills Required:
-          </span>
-
-          <div className="flex flex-wrap gap-2 mt-2">
-            {selectedProject.skillsRequired?.map(
-              (skill) => (
-                <span
-                  key={skill}
-                  className="
+        <div className="flex flex-wrap gap-2">
+          {selectedProject.skillsRequired?.map(
+            (skill) => (
+              <span
+                key={skill}
+                className="
                   bg-blue-100
                   text-blue-700
                   px-3
                   py-1
                   rounded-full
                   text-sm
+                  font-medium
                 "
-                >
-                  {skill}
-                </span>
-              )
-            )}
-          </div>
+              >
+                {skill}
+              </span>
+            )
+          )}
         </div>
+      </div>
 
-        <div className="mb-6">
-          <h2 className="font-semibold mb-2">
-            Description
-          </h2>
+      {/* Description */}
+      <div className="mb-8">
+        <h2 className="font-semibold mb-3">
+          Description
+        </h2>
 
-          <p>
+        <div className="bg-gray-50 rounded-xl p-5">
+          <p className="text-gray-700 leading-relaxed">
             {selectedProject.description}
           </p>
         </div>
+      </div>
 
-        <div className="border-t pt-4">
-          <h2 className="font-semibold mb-2">
-            Client Information
-          </h2>
-          {
-          selectedProject
-            ?.assignedFreelancer && (
+      {/* Client Information */}
+      <div className="bg-gray-50 rounded-xl p-5">
 
-            <div className="border-t pt-4 mt-4">
+        <h2 className="font-semibold mb-3">
+          Posted By
+        </h2>
 
-              <h2 className="font-semibold mb-2">
-                Assigned Freelancer
-              </h2>
+        <p className="font-medium">
+          {selectedProject.client?.name}
+        </p>
 
-              <p>
-                {
-                  selectedProject
-                    .assignedFreelancer
-                    .name
-                }
-              </p>
+        <p className="text-gray-600">
+          {selectedProject.client?.email}
+        </p>
 
-              <p className="text-gray-600">
-                {
-                  selectedProject
-                    .assignedFreelancer
-                    .email
-                }
-              </p>
+        {selectedProject?.assignedFreelancer && (
+          <div className="border-t mt-5 pt-5">
 
-            </div>
-          )
-        }
+            <h2 className="font-semibold mb-3">
+              Assigned Freelancer
+            </h2>
 
-          <h2 className="font-semibold mb-3">
-            Posted By
-          </h2>
+            <p className="font-medium">
+              {
+                selectedProject
+                  .assignedFreelancer
+                  .name
+              }
+            </p>
 
-          <p>
-            {selectedProject.client?.name}
-          </p>
+            <p className="text-gray-600">
+              {
+                selectedProject
+                  .assignedFreelancer
+                  .email
+              }
+            </p>
 
-          <p className="text-gray-600">
-            {selectedProject.client?.email}
-          </p>
-        </div>
-        
-        <div className="flex gap-3 mt-6">
+          </div>
+        )}
+
+      </div>
+
+      {/* Actions */}
+      <div className="mt-8 flex flex-wrap gap-3">
+
         <Button
           variant="secondary"
           onClick={() => navigate(-1)}
@@ -355,175 +345,188 @@ import {
           Back
         </Button>
 
+        {user?._id ===
+          selectedProject?.client?._id && (
+          <>
+            <Link
+              to={`/projects/edit/${selectedProject._id}`}
+              className="
+                bg-blue-600
+                hover:bg-blue-700
+                text-white
+                px-4
+                py-2
+                rounded-xl
+              "
+            >
+              Edit Project
+            </Link>
 
-      {
-      user?._id ===
-        selectedProject?.client?._id && (
-        <div className="mt-4 flex gap-2 flex-wrap">
+            <Link
+              to={`/projects/${selectedProject._id}/proposals`}
+              className="
+                bg-purple-600
+                hover:bg-purple-700
+                text-white
+                px-4
+                py-2
+                rounded-xl
+              "
+            >
+              View Proposals
+            </Link>
 
-          <Link
-            to={`/projects/edit/${selectedProject._id}`}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Edit Project
-          </Link>
-
-          <Link
-            to={`/projects/${selectedProject._id}/proposals`}
-            className="bg-purple-600 text-white px-4 py-2 rounded"
-          >
-            View Proposals
-          </Link>
-
-          {
-            selectedProject.status ===
+            {selectedProject.status ===
               "in_progress" && (
-
               <button
                 onClick={handleComplete}
-                className="bg-green-600 text-white px-4 py-2 rounded"
+                className="
+                  bg-green-600
+                  hover:bg-green-700
+                  text-white
+                  px-4
+                  py-2
+                  rounded-xl
+                "
               >
                 Mark Completed
               </button>
-            )
-          }
+            )}
 
-          <button
-            onClick={handleDelete}
-            className="bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Delete
-          </button>
+            <button
+              onClick={handleDelete}
+              className="
+                bg-red-600
+                hover:bg-red-700
+                text-white
+                px-4
+                py-2
+                rounded-xl
+              "
+            >
+              Delete
+            </button>
+          </>
+        )}
 
-        </div>
-      )
-    }
-
-      {
-        user?._id ===
-          selectedProject?.client?._id && (
-          <div className="mt-8">
-
-            <h2 className="text-2xl font-bold mb-4">
-              Received Proposals
-            </h2>
-
-            {
-              proposals.length === 0 ? (
-                <p>
-                  No proposals yet
-                </p>
-              ) : (
-                <div className="space-y-4">
-
-                  {proposals.map(
-                    (proposal) => (
-                      <div
-                        key={proposal._id}
-                        className="
-                          border
-                          rounded-lg
-                          p-4
-                          bg-white
-                        "
-                      >
-                        <h3 className="font-bold">
-                          {
-                            proposal
-                              .freelancer
-                              ?.name
-                          }
-                        </h3>
-
-                        <p className="text-sm text-gray-500">
-                          {
-                            proposal
-                              .freelancer
-                              ?.email
-                          }
-                        </p>
-
-                        <p className="mt-2">
-                          <strong>
-                            Budget:
-                          </strong>{" "}
-                          ₹
-                          {
-                            proposal
-                              .proposedBudget
-                          }
-                        </p>
-
-                        <p className="mt-2">
-                          {
-                            proposal
-                              .coverLetter
-                          }
-                        </p>
-
-                        <span
-                          className="
-                            inline-block
-                            mt-3
-                            px-3
-                            py-1
-                            bg-yellow-100
-                            rounded-full
-                            text-sm
-                          "
-                        >
-                          {
-                            proposal.status
-                          }
-                        </span>
-
-                        {
-                        proposal.status ===
-                          "pending" && (
-
-                          <div className="flex gap-2 mt-3">
-
-                            <Button
-                              onClick={() =>
-                                handleStatusUpdate(
-                                  proposal._id,
-                                  "accepted"
-                                )
-                              }
-                            >
-                              Accept
-                            </Button>
-
-                            <Button
-                              variant="danger"
-                              onClick={() =>
-                                handleStatusUpdate(
-                                  proposal._id,
-                                  "rejected"
-                                )
-                              }
-                            >
-                              Reject
-                            </Button>
-
-                          </div>
-                        )
-                      }
-                      </div>
-                    )
-                  )}
-
-                </div>
-              )
-            }
-
-          </div>
-        )
-      }
       </div>
 
-    </PageContainer>
-  );
+    </Card>
+
+    {/* Client Proposal Section */}
+    {user?._id ===
+      selectedProject?.client?._id && (
+      <div className="mt-10">
+
+        <h2 className="text-3xl font-bold mb-6">
+          Received Proposals
+        </h2>
+
+        {proposals.length === 0 ? (
+          <Card>
+            No proposals received yet.
+          </Card>
+        ) : (
+          <div className="space-y-4">
+
+            {proposals.map(
+              (proposal) => (
+                <Card
+                  key={proposal._id}
+                  className="
+                    p-6
+                    rounded-2xl
+                    shadow-sm
+                    hover:shadow-md
+                    transition
+                  "
+                >
+                  <h3 className="text-lg font-bold">
+                    {
+                      proposal.freelancer
+                        ?.name
+                    }
+                  </h3>
+
+                  <p className="text-gray-500">
+                    {
+                      proposal.freelancer
+                        ?.email
+                    }
+                  </p>
+
+                  <p className="mt-3">
+                    <strong>
+                      Proposed Budget:
+                    </strong>{" "}
+                    ₹
+                    {
+                      proposal.proposedBudget
+                    }
+                  </p>
+
+                  <p className="mt-3 text-gray-700">
+                    {
+                      proposal.coverLetter
+                    }
+                  </p>
+
+                  <span
+                    className="
+                      inline-block
+                      mt-4
+                      px-3
+                      py-1
+                      rounded-full
+                      bg-yellow-100
+                      text-yellow-700
+                      text-sm
+                    "
+                  >
+                    {proposal.status}
+                  </span>
+
+                  {proposal.status ===
+                    "pending" && (
+                    <div className="flex gap-3 mt-4">
+
+                      <Button
+                        onClick={() =>
+                          handleStatusUpdate(
+                            proposal._id,
+                            "accepted"
+                          )
+                        }
+                      >
+                        Accept
+                      </Button>
+
+                      <Button
+                        variant="danger"
+                        onClick={() =>
+                          handleStatusUpdate(
+                            proposal._id,
+                            "rejected"
+                          )
+                        }
+                      >
+                        Reject
+                      </Button>
+
+                    </div>
+                  )}
+                </Card>
+              )
+            )}
+
+          </div>
+        )}
+
+      </div>
+    )}
+
+  </PageContainer>
+);
 };
 
 export default ProjectDetails;
