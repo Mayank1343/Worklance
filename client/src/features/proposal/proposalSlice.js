@@ -53,6 +53,30 @@ export const getProjectProposals =
     }
   );
 
+export const updateProposalStatus =
+  createAsyncThunk(
+    "proposal/updateStatus",
+
+    async (
+      {
+        proposalId,
+        status,
+      },
+      thunkAPI
+    ) => {
+      try {
+        return await updateProposalStatusAPI(
+          proposalId,
+          status
+        );
+      } catch (error) {
+        return thunkAPI.rejectWithValue(
+          error.response.data.message
+        );
+      }
+    }
+  );
+
 const initialState = {
   proposals: [],
   isLoading: false,
@@ -140,49 +164,24 @@ const proposalSlice =
         )
 
         .addCase(
-        updateProposalStatus.fulfilled,
-        (state, action) => {
+          updateProposalStatus.fulfilled,
+          (state, action) => {
 
-          state.proposals =
-            state.proposals.map(
-              (proposal) =>
-                proposal._id ===
-                action.payload.proposal._id
-                  ? action.payload.proposal
-                  : proposal
-            );
-        }
-      );
+            state.proposals =
+              state.proposals.map(
+                (proposal) =>
+                  proposal._id ===
+                  action.payload.proposal._id
+                    ? action.payload.proposal
+                    : proposal
+              );
+          }
+        )
     },
   });
 
 export const {
   resetProposalState,
 } = proposalSlice.actions;
-
-
-export const updateProposalStatus =
-  createAsyncThunk(
-    "proposal/updateProposalStatus",
-
-    async (
-      {
-        proposalId,
-        status,
-      },
-      thunkAPI
-    ) => {
-      try {
-        return await updateProposalStatusAPI(
-          proposalId,
-          status
-        );
-      } catch (error) {
-        return thunkAPI.rejectWithValue(
-          error.response.data.message
-        );
-      }
-    }
-  );
 
 export default proposalSlice.reducer;

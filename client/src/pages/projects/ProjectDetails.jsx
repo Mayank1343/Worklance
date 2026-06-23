@@ -317,26 +317,34 @@ const ProjectDetails = () => {
 
 
       {
-        user?._id ===
-          selectedProject?.client?._id && (
-          <>
+      user?._id ===
+        selectedProject?.client?._id && (
+        <div className="mt-4 flex gap-2">
+
           <Link
             to={`/projects/edit/${selectedProject._id}`}
+            className="bg-blue-600 text-white px-4 py-2 rounded"
           >
-            <Button>
-              Edit Project
-            </Button>
+            Edit Project
           </Link>
 
-            <Button
-              variant="danger"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-          </>
-        )
-      }
+          <Link
+            to={`/projects/${selectedProject._id}/proposals`}
+            className="bg-purple-600 text-white px-4 py-2 rounded"
+          >
+            View Proposals
+          </Link>
+
+          <button
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Delete
+          </button>
+
+        </div>
+      )
+    }
 
       {
         user?._id ===
