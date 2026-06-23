@@ -25,7 +25,7 @@ import EditProject
 from "../pages/projects/EditProject";
 
 import ProjectProposals
-from "../pages/projects/ProjectProposals";
+from "../pages/proposals/ProjectProposals";
 
 
 const AppRoutes = () => {
