@@ -7,6 +7,7 @@ import {
 import {
   getProjectById,
   deleteProject,
+  completeProject,
 } from "../../features/project/projectSlice";
 
 import { useParams, useNavigate } from "react-router-dom";
@@ -35,7 +36,7 @@ import {
   updateProposalStatus,
 } from "../../features/proposal/proposalSlice";
 
-const ProjectDetails = () => {
+  const ProjectDetails = () => {
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
@@ -130,6 +131,16 @@ const ProjectDetails = () => {
 
     dispatch(
       getProjectProposals(id)
+    );
+  };
+
+  const handleComplete =
+  async () => {
+
+    await dispatch(
+      completeProject(
+        selectedProject._id
+      )
     );
   };
 
@@ -348,7 +359,7 @@ const ProjectDetails = () => {
       {
       user?._id ===
         selectedProject?.client?._id && (
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex gap-2 flex-wrap">
 
           <Link
             to={`/projects/edit/${selectedProject._id}`}
@@ -363,6 +374,19 @@ const ProjectDetails = () => {
           >
             View Proposals
           </Link>
+
+          {
+            selectedProject.status ===
+              "in_progress" && (
+
+              <button
+                onClick={handleComplete}
+                className="bg-green-600 text-white px-4 py-2 rounded"
+              >
+                Mark Completed
+              </button>
+            )
+          }
 
           <button
             onClick={handleDelete}

@@ -24,7 +24,7 @@ export const clientLinks = [
   },
   {
     label: "My Projects",
-    path: "/my-projects"
+    path: "/projects"
   },
   {
     label: "Create Project",

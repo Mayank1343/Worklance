@@ -49,3 +49,13 @@ export const getProjectByIdAPI =
 
     return response.data;
   };
+
+  export const completeProjectAPI =
+  async (id) => {
+    const response =
+      await API.put(
+        `/projects/${id}/complete`
+      );
+
+    return response.data;
+  };

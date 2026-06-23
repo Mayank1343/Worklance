@@ -228,3 +228,49 @@ export const deleteProject = async (
     next(error);
   }
 };
+
+export const completeProject = async (
+  req,
+  res,
+  next
+) => {
+  try {
+
+    const project =
+      await Project.findById(
+        req.params.id
+      );
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Project not found",
+      });
+    }
+
+    if (
+      project.client.toString() !==
+      req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Not authorized",
+      });
+    }
+
+    project.status =
+      "completed";
+
+    await project.save();
+
+    res.status(200).json({
+      success: true,
+      project,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};

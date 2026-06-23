@@ -8,6 +8,7 @@ import {
   getProjectById,
   updateProject,
   deleteProject,
+  completeProject,
 } from "../controllers/project.controller.js";
 
 const router = express.Router();
@@ -38,6 +39,12 @@ router.delete(
   "/:id",
   protect,
   deleteProject
+);
+
+router.put(
+  "/:id/complete",
+  protect,
+  completeProject
 );
 
 export default router;

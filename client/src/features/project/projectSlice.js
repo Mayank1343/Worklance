@@ -9,6 +9,7 @@ import {
   getProjectByIdAPI,
   updateProjectAPI,
   deleteProjectAPI,
+  completeProjectAPI,
 } from "../../api/projectAPI";
 
 export const createProject =
@@ -104,6 +105,26 @@ export const updateProject =
       }
     }
   );
+
+  export const completeProject =
+    createAsyncThunk(
+      "project/completeProject",
+
+      async (
+        id,
+        thunkAPI
+      ) => {
+        try {
+          return await completeProjectAPI(
+            id
+          );
+        } catch (error) {
+          return thunkAPI.rejectWithValue(
+            error.response.data.message
+          );
+        }
+      }
+    );
 
 const projectSlice = createSlice({
   name: "project",
@@ -251,6 +272,24 @@ const projectSlice = createSlice({
     state.error = action.payload;
   }
 )
+
+  .addCase(
+    completeProject.fulfilled,
+    (state, action) => {
+
+      state.selectedProject =
+        action.payload.project;
+
+      state.projects =
+        state.projects.map(
+          (project) =>
+            project._id ===
+            action.payload.project._id
+              ? action.payload.project
+              : project
+        );
+    }
+  )
 
 }
 });
