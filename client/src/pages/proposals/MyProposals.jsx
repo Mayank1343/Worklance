@@ -9,6 +9,8 @@ import {
   getMyProposals,
 } from "../../features/proposal/proposalSlice";
 
+import EmptyState from "../../components/ui/EmptyState";
+
 const MyProposals = () => {
   const dispatch =
     useAppDispatch();
@@ -52,7 +54,10 @@ const MyProposals = () => {
 
       {proposals.length === 0 ? (
         <div className="bg-white p-6 rounded shadow">
-          No proposals submitted yet.
+          <EmptyState
+            title="No Proposals Yet"
+            description="Start applying to projects."
+            />
         </div>
       ) : (
         <div className="space-y-4">

@@ -66,7 +66,9 @@ const Projects = () => {
                 to={`/projects/${project._id}`}
                 className="block"
             >
-                <Card>
+                <Card hover:shadow-lg
+                transition-all
+                duration-300>
 
                     <div className="flex justify-between items-start">
 

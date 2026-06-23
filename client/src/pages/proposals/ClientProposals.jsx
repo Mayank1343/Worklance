@@ -38,7 +38,7 @@ const ClientProposals = () => {
 
       <div className="space-y-4">
 
-        {clientProposals.map(
+        {(clientProposals || []).map(
           (proposal) => (
             <div
               key={proposal._id}

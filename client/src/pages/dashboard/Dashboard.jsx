@@ -52,7 +52,8 @@ import {
   return (
     <div>
       <h1 className="text-3xl font-bold">
-        Welcome Back, {user?.name}
+        Welcome Back, {user?.name} 👋
+        Manage your freelance marketplace activity.
       </h1>
 
       <p className="text-gray-500 mt-2">

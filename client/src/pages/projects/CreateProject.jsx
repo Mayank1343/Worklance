@@ -80,7 +80,7 @@ const CreateProject = () => {
         Create Project
       </h1>
 
-      <Card className="max-w-3xl mx-auto">
+      <Card className="max-w-3xl mx-auto" >
       <form
         onSubmit={handleSubmit}
         className="space-y-5"

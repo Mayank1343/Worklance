@@ -7,6 +7,8 @@ import {
   createProposalAPI,
   getProjectProposalsAPI,
   updateProposalStatusAPI,
+  getMyProposalsAPI,
+  getClientProposalsAPI,
 } from "../../api/proposalAPI";
 
 // CREATE PROPOSAL
@@ -77,8 +79,43 @@ export const updateProposalStatus =
     }
   );
 
+  export const getMyProposals =
+  createAsyncThunk(
+    "proposal/getMyProposals",
+
+    async (_, thunkAPI) => {
+      try {
+
+        return await
+          getMyProposalsAPI();
+
+      } catch (error) {
+
+        return thunkAPI.rejectWithValue(
+          error.response.data.message
+        );
+      }
+    }
+  );
+
+  export const getClientProposals =
+    createAsyncThunk(
+      "proposal/getClientProposals",
+
+      async (_, thunkAPI) => {
+        try {
+          return await getClientProposalsAPI();
+        } catch (error) {
+          return thunkAPI.rejectWithValue(
+            error.response.data.message
+          );
+        }
+      }
+    );
+
 const initialState = {
   proposals: [],
+  clientProposals: [],
   isLoading: false,
   error: null,
   success: false,
