@@ -1,8 +1,53 @@
 import { useSelector } from "react-redux";
 import StatCard from "../../components/dashboard/StatCard";
 
-const Dashboard = () => {
+import { useEffect } from "react";
+
+import {
+  getProjects,
+} from "../../features/project/projectSlice";
+
+import {
+  useAppDispatch,
+} from "../../hooks/reduxHooks";
+
+  const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
+  const { projects } =
+    useSelector(
+      (state) => state.project
+    );
+
+  const totalProjects =
+    projects?.length || 0;
+
+  const openProjects =
+    projects?.filter(
+      (project) =>
+        project.status === "open"
+    ).length || 0;
+
+  const inProgressProjects =
+    projects?.filter(
+      (project) =>
+        project.status ===
+        "in_progress"
+    ).length || 0;
+
+  const completedProjects =
+    projects?.filter(
+      (project) =>
+        project.status ===
+        "completed"
+    ).length || 0;
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getProjects()
+    );
+  }, [dispatch]);
 
   return (
     <div>
@@ -14,20 +59,25 @@ const Dashboard = () => {
         Role: {user?.role}
       </p>
 
-      <div className="grid md:grid-cols-3 gap-4 mt-6">
+      <div className="grid md:grid-cols-4 gap-4 mt-6">
         <StatCard
-          title="Projects"
-          value="0"
+          title="Total Projects"
+          value={totalProjects}
         />
 
         <StatCard
-          title="Proposals"
-          value="0"
+          title="Open"
+          value={openProjects}
         />
 
         <StatCard
-          title="Messages"
-          value="0"
+          title="In Progress"
+          value={inProgressProjects}
+        />
+
+        <StatCard
+          title="Completed"
+          value={completedProjects}
         />
       </div>
     </div>
