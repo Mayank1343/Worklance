@@ -3,16 +3,20 @@ import Sidebar from "../components/dashboard/Sidebar";
 
 const DashboardLayout = ({ children }) => {
   return (
-    <div className="h-screen flex flex-col">
-      <Navbar />
+    <div className="h-screen flex bg-gray-100">
 
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
+      <Sidebar />
 
-        <main className="flex-1 p-6 overflow-y-auto bg-gray-50">
+      <div className="flex-1 flex flex-col overflow-hidden">
+
+        <Navbar />
+
+        <main className="flex-1 overflow-y-auto p-8">
           {children}
         </main>
+
       </div>
+
     </div>
   );
 };
