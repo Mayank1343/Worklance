@@ -34,3 +34,14 @@ export const createProposalAPI =
 
     return response.data;
   };
+
+  export const getMyProposalsAPI =
+  async () => {
+
+    const response =
+      await API.get(
+        "/proposals/my-proposals"
+      );
+
+    return response.data;
+  };

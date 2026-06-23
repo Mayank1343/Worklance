@@ -12,6 +12,10 @@ import {
   completeProjectAPI,
 } from "../../api/projectAPI";
 
+import {
+  getMyProposalsAPI,
+} from "../../api/proposalAPI";
+
 export const createProject =
   createAsyncThunk(
     "project/createProject",
@@ -119,6 +123,28 @@ export const updateProject =
             id
           );
         } catch (error) {
+          return thunkAPI.rejectWithValue(
+            error.response.data.message
+          );
+        }
+      }
+    );
+
+    export const getMyProposals =
+    createAsyncThunk(
+      "proposal/getMyProposals",
+
+      async (
+        _,
+        thunkAPI
+      ) => {
+        try {
+
+          return await
+            getMyProposalsAPI();
+
+        } catch (error) {
+
           return thunkAPI.rejectWithValue(
             error.response.data.message
           );
@@ -291,6 +317,13 @@ const projectSlice = createSlice({
     }
   )
 
+  .addCase(
+    getMyProposals.fulfilled,
+    (state, action) => {
+      state.proposals =
+        action.payload.proposals;
+    }
+  )
 }
 });
 

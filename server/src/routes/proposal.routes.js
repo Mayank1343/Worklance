@@ -6,6 +6,7 @@ import {
   createProposal,
   getProjectProposals,
   updateProposalStatus,
+  getMyProposals,
 } from "../controllers/proposal.controller.js";
 
 const router =
@@ -27,6 +28,12 @@ router.put(
   "/:id/status",
   protect,
   updateProposalStatus
+);
+
+router.get(
+  "/my-proposals",
+  protect,
+  getMyProposals
 );
 
 export default router;

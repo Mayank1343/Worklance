@@ -193,3 +193,33 @@ export const getProjectProposals =
     }
   };
 
+  export const getMyProposals =
+  async (
+    req,
+    res,
+    next
+  ) => {
+    try {
+
+      const proposals =
+        await Proposal.find({
+          freelancer:
+            req.user._id,
+        })
+        .populate(
+          "project",
+          "title budget status"
+        )
+        .sort({
+          createdAt: -1,
+        });
+
+      res.status(200).json({
+        success: true,
+        proposals,
+      });
+
+    } catch (error) {
+      next(error);
+    }
+  };
