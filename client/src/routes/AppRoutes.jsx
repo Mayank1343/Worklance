@@ -27,6 +27,9 @@ from "../pages/projects/EditProject";
 import ProjectProposals
 from "../pages/proposals/ProjectProposals";
 
+import MyProposals
+from "../pages/proposals/MyProposals";
+
 
 const AppRoutes = () => {
   return (
@@ -127,6 +130,17 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <DashboardLayout>
               <ProjectProposals />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/my-proposals"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <MyProposals />
             </DashboardLayout>
           </ProtectedRoute>
         }

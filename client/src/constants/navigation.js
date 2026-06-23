@@ -14,7 +14,11 @@ export const freelancerLinks = [
   {
     label: "Profile",
     path: "/profile"
-  }
+  },
+  {
+  label: "My Proposals",
+  path: "/my-proposals",
+},
 ];
 
 export const clientLinks = [
