@@ -223,3 +223,50 @@ export const getProjectProposals =
       next(error);
     }
   };
+
+  export const getClientProposals =
+  async (
+    req,
+    res,
+    next
+  ) => {
+    try {
+
+      const projects =
+        await Project.find({
+          client: req.user._id,
+        });
+
+      const projectIds =
+        projects.map(
+          (project) =>
+            project._id
+        );
+
+      const proposals =
+        await Proposal.find({
+          project: {
+            $in: projectIds,
+          },
+        })
+          .populate(
+            "freelancer",
+            "name email"
+          )
+          .populate(
+            "project",
+            "title"
+          )
+          .sort({
+            createdAt: -1,
+          });
+
+      res.status(200).json({
+        success: true,
+        proposals,
+      });
+
+    } catch (error) {
+      next(error);
+    }
+  };

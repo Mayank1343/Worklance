@@ -7,6 +7,7 @@ import {
   getProjectProposals,
   updateProposalStatus,
   getMyProposals,
+  getClientProposals,
 } from "../controllers/proposal.controller.js";
 
 const router =
@@ -34,6 +35,12 @@ router.get(
   "/my-proposals",
   protect,
   getMyProposals
+);
+
+router.get(
+  "/client-proposals",
+  protect,
+  getClientProposals
 );
 
 export default router;

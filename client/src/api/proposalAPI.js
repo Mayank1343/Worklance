@@ -45,3 +45,14 @@ export const createProposalAPI =
 
     return response.data;
   };
+
+  export const getClientProposalsAPI =
+  async () => {
+
+    const response =
+      await API.get(
+        "/proposals/client-proposals"
+      );
+
+    return response.data;
+  };

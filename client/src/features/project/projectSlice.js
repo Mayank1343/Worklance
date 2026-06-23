@@ -14,6 +14,7 @@ import {
 
 import {
   getMyProposalsAPI,
+  getClientProposalsAPI,
 } from "../../api/proposalAPI";
 
 export const createProject =
@@ -152,10 +153,33 @@ export const updateProject =
       }
     );
 
+    export const getClientProposals =
+  createAsyncThunk(
+    "proposal/getClientProposals",
+
+    async (
+      _,
+      thunkAPI
+    ) => {
+      try {
+
+        return await
+          getClientProposalsAPI();
+
+      } catch (error) {
+
+        return thunkAPI.rejectWithValue(
+          error.response.data.message
+        );
+      }
+    }
+  );
+
 const projectSlice = createSlice({
   name: "project",
 
   initialState,
+  clientProposals: [],
 
   reducers: {},
 
@@ -324,6 +348,16 @@ const projectSlice = createSlice({
         action.payload.proposals;
     }
   )
+
+  .addCase(
+  getClientProposals.fulfilled,
+  (state, action) => {
+
+    state.clientProposals =
+      action.payload.proposals;
+
+  }
+)
 }
 });
 
