@@ -40,12 +40,46 @@ const Register = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-slate-800 p-8 rounded-xl w-[400px]">
-        <h1 className="text-3xl font-bold mb-6">
+return (
+    <div
+      className="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        bg-gradient-to-br
+        from-slate-900
+        via-blue-900
+        to-indigo-900
+        px-4
+      "
+    >
+      <div
+        className="
+          w-full
+          max-w-md
+          bg-white/10
+          backdrop-blur-lg
+          border
+          border-white/20
+          rounded-3xl
+          p-8
+          shadow-2xl
+        "
+      >
+        <div className="text-center mb-8">
+          <h1 className="text-5xl font-bold text-white">
+            Worklance
+          </h1>
+
+          <p className="text-gray-300 mt-2">
+            Freelance Marketplace Platform
+          </p>
+        </div>
+
+        <h2 className="text-3xl font-bold text-white mb-6">
           Register
-        </h1>
+        </h2>
 
         <form
           onSubmit={handleSubmit}
@@ -57,7 +91,19 @@ const Register = () => {
             placeholder="Enter name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-slate-700 outline-none"
+            className="
+              w-full
+              p-3
+              rounded-xl
+              bg-white/10
+              border
+              border-white/20
+              text-white
+              placeholder:text-gray-300
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
           />
 
           <input
@@ -66,7 +112,19 @@ const Register = () => {
             placeholder="Enter email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-slate-700 outline-none"
+            className="
+              w-full
+              p-3
+              rounded-xl
+              bg-white/10
+              border
+              border-white/20
+              text-white
+              placeholder:text-gray-300
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
           />
 
           <input
@@ -75,39 +133,78 @@ const Register = () => {
             placeholder="Enter password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-slate-700 outline-none"
+            className="
+              w-full
+              p-3
+              rounded-xl
+              bg-white/10
+              border
+              border-white/20
+              text-white
+              placeholder:text-gray-300
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
           />
 
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-slate-700 outline-none"
+            className="
+              w-full
+              p-3
+              rounded-xl
+              bg-white/10
+              border
+              border-white/20
+              text-white
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
           >
-            <option value="client">
+            <option
+              value="client"
+              className="text-black"
+            >
               Client
             </option>
 
-            <option value="freelancer">
+            <option
+              value="freelancer"
+              className="text-black"
+            >
               Freelancer
             </option>
           </select>
 
           <button
-            className="w-full bg-green-600 hover:bg-green-700 p-3 rounded-lg"
+            className="
+              w-full
+              bg-green-600
+              hover:bg-green-700
+              text-white
+              py-3
+              rounded-xl
+              font-semibold
+              transition
+            "
           >
             Register
           </button>
+
+          <p className="text-center text-gray-300">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-blue-400 hover:text-blue-300 font-semibold"
+            >
+              Login
+            </Link>
+          </p>
         </form>
-        <p className="text-center mt-4 text-sm text-gray-400">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-blue-500 hover:text-blue-400 font-medium"
-          >
-            Login
-          </Link>
-        </p>
       </div>
     </div>
   );
