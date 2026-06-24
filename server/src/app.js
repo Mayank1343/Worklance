@@ -24,8 +24,18 @@ console.log("CLIENT_URL =", process.env.CLIENT_URL);
 // CORS FIRST
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://theworklance.vercel.app",
+    ],
     credentials: true,
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "PATCH",
+    ],
   })
 );
 
