@@ -7,6 +7,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../hooks/reduxHooks";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -82,6 +83,16 @@ const Login = () => {
           >
             {isLoading ? "Loading..." : "Login"}
           </button>
+
+          <p className="text-center mt-4 text-sm text-gray-400">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-500 hover:text-blue-400 font-medium"
+            >
+              Register
+            </Link>
+          </p>
         </form>
       </div>
     </div>

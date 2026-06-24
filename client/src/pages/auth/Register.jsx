@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../features/auth/authSlice";
 
 import { useAppDispatch } from "../../hooks/reduxHooks";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -98,6 +99,15 @@ const Register = () => {
             Register
           </button>
         </form>
+        <p className="text-center mt-4 text-sm text-gray-400">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-500 hover:text-blue-400 font-medium"
+          >
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );
