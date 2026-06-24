@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import { registerUser } from "../../features/auth/authSlice";
 
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/reduxHooks";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -36,9 +39,18 @@ const Register = () => {
     if (
       registerUser.fulfilled.match(resultAction)
     ) {
+      alert(
+        "Registration successful! Please login."
+      );
+
       navigate("/login");
     }
   };
+
+  const { error, isLoading } =
+  useAppSelector(
+    (state) => state.auth
+  );
 
 return (
     <div
@@ -181,10 +193,12 @@ return (
           </select>
 
           <button
+            disabled={isLoading}
             className="
               w-full
               bg-green-600
               hover:bg-green-700
+              disabled:bg-green-800
               text-white
               py-3
               rounded-xl
@@ -192,8 +206,15 @@ return (
               transition
             "
           >
-            Register
+            {isLoading
+              ? "Creating Account..."
+              : "Register"}
           </button>
+          {error && (
+            <p className="text-red-400 text-sm text-center">
+              {error}
+            </p>
+          )}
 
           <p className="text-center text-gray-300">
             Already have an account?{" "}
