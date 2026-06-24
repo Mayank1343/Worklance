@@ -47,4 +47,10 @@ router.put(
   completeProject
 );
 
+router.patch(
+  "/:id/complete",
+  protect,
+  completeProject
+);
+
 export default router;

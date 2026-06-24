@@ -15,6 +15,7 @@ import Button from "../../components/ui/Button";
 import PageContainer from "../../components/ui/PageContainer";
 import Input from "../../components/ui/Input";
 import TextArea from "../../components/ui/TextArea";
+import toast from "react-hot-toast";
 
 const CreateProject = () => {
   const dispatch =
@@ -71,6 +72,10 @@ const CreateProject = () => {
           resultAction
         )
       ) {
+        toast.success(
+          "Project created successfully"
+        );
+
         navigate("/projects");
       }
     };

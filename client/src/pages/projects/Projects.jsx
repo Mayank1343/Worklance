@@ -13,6 +13,7 @@ import {
 import Card from "../../components/ui/Card";
 import PageContainer from "../../components/ui/PageContainer";
 import Loader from "../../components/ui/Loader";
+import EmptyState from "../../components/ui/EmptyState";
 
 const Projects = () => {
   const dispatch =
@@ -33,22 +34,13 @@ const Projects = () => {
     return <Loader />;
   }
 
-  if (
-    !isLoading &&
-    projects.length === 0
-  ) {
+  if (!isLoading && projects.length === 0) {
     return (
       <PageContainer>
-        <div className="text-center py-20">
-          <h2 className="text-3xl font-bold">
-            No Projects Found
-          </h2>
-
-          <p className="text-gray-500 mt-3">
-            Create your first project
-            to get started.
-          </p>
-        </div>
+        <EmptyState
+          title="No Projects Found"
+          description="Create your first project to get started."
+        />
       </PageContainer>
     );
   }

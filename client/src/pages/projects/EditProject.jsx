@@ -20,6 +20,7 @@ import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import TextArea from "../../components/ui/TextArea";
 import PageContainer from "../../components/ui/PageContainer";
+import toast from "react-hot-toast";
 
 const EditProject = () => {
   const { id } = useParams();
@@ -103,9 +104,11 @@ const EditProject = () => {
           resultAction
         )
       ) {
-        navigate(
-          `/projects/${id}`
+        toast.success(
+          "Project updated successfully"
         );
+
+        navigate(`/projects/${id}`);
       }
     };
 

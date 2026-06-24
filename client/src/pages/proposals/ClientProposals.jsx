@@ -7,16 +7,17 @@ import {
 
 import {
   getClientProposals,
+  updateProposalStatus,
 } from "../../features/proposal/proposalSlice";
 
-import PageContainer from "../../components/ui/PageContainer";
 import Card from "../../components/ui/Card";
-import EmptyState from "../../components/ui/EmptyState";
+import Button from "../../components/ui/Button";
+import PageContainer from "../../components/ui/PageContainer";
 import Loader from "../../components/ui/Loader";
+import EmptyState from "../../components/ui/EmptyState";
 
 const ClientProposals = () => {
-  const dispatch =
-    useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     clientProposals,
@@ -26,92 +27,90 @@ const ClientProposals = () => {
   );
 
   useEffect(() => {
-    dispatch(
-      getClientProposals()
-    );
+    dispatch(getClientProposals());
   }, [dispatch]);
+
+  const handleStatusUpdate = (
+    proposalId,
+    status
+  ) => {
+    dispatch(
+      updateProposalStatus({
+        proposalId,
+        status,
+      })
+    );
+  };
 
   if (isLoading) {
     return <Loader />;
   }
 
+  if (
+    !isLoading &&
+    clientProposals.length === 0
+  ) {
+    return (
+      <EmptyState
+        title="No Proposals Received"
+        description="Freelancer proposals will appear here."
+      />
+    );
+  }
+
   return (
     <PageContainer>
+      <h1 className="text-3xl font-bold mb-2">
+        Received Proposals
+      </h1>
 
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold">
-          Received Proposals
-        </h1>
+      <p className="text-gray-500 mb-6">
+        Review and manage freelancer proposals.
+      </p>
 
-        <p className="text-gray-500 mt-2">
-          Review all proposals
-          submitted to your projects.
-        </p>
-      </div>
-
-      {(clientProposals || []).length === 0 ? (
-
+      {!clientProposals?.length ? (
         <Card>
-          <EmptyState
-            title="No Proposals Yet"
-            description="Freelancer proposals will appear here."
-          />
+          <p className="text-center text-gray-500">
+            No proposals received yet.
+          </p>
         </Card>
-
       ) : (
-
-        <div className="space-y-5">
-
-          {(clientProposals || []).map(
+        <div className="space-y-4">
+          {clientProposals.map(
             (proposal) => (
               <Card
                 key={proposal._id}
-                className="
-                  rounded-2xl
-                  border
-                  shadow-sm
-                  hover:shadow-md
-                  transition
-                  duration-300
-                "
               >
-
                 <div className="flex justify-between items-start">
 
                   <div>
-
-                    <h2
-                      className="
-                        text-xl
-                        font-bold
-                        text-gray-900
-                      "
-                    >
+                    <h2 className="text-xl font-bold">
                       {
                         proposal.project
                           ?.title
                       }
                     </h2>
 
-                    <p className="text-gray-500 mt-1">
-                      Submitted by
-                      {" "}
+                    <p className="text-gray-600">
                       {
-                        proposal.freelancer
+                        proposal
+                          .freelancer
                           ?.name
                       }
                     </p>
 
+                    <p className="text-sm text-gray-500">
+                      {
+                        proposal
+                          .freelancer
+                          ?.email
+                      }
+                    </p>
                   </div>
 
                   <span
                     className={`
-                      px-3
-                      py-1
-                      rounded-full
-                      text-sm
-                      font-medium
+                      px-3 py-1 rounded-full text-sm font-medium
                       ${
                         proposal.status ===
                         "accepted"
@@ -128,50 +127,65 @@ const ClientProposals = () => {
 
                 </div>
 
-                <div className="mt-5">
-
-                  <p className="text-gray-500 text-sm">
-                    Freelancer Email
-                  </p>
-
-                  <p className="font-medium">
-                    {
-                      proposal.freelancer
-                        ?.email
-                    }
-                  </p>
-
-                </div>
-
-                <div className="mt-5">
-
-                  <p className="text-gray-500 text-sm">
+                <div className="mt-4">
+                  <p className="font-semibold">
                     Proposed Budget
                   </p>
 
-                  <p
-                    className="
-                      text-2xl
-                      font-bold
-                      text-blue-600
-                    "
-                  >
+                  <p className="text-2xl font-bold text-blue-600">
                     ₹
                     {
                       proposal.proposedBudget
                     }
                   </p>
-
                 </div>
 
+                <div className="mt-4">
+                  <p className="font-semibold mb-1">
+                    Cover Letter
+                  </p>
+
+                  <p className="text-gray-700">
+                    {
+                      proposal.coverLetter
+                    }
+                  </p>
+                </div>
+
+                {proposal.status ===
+                  "pending" && (
+                  <div className="flex gap-3 mt-5">
+
+                    <Button
+                      onClick={() =>
+                        handleStatusUpdate(
+                          proposal._id,
+                          "accepted"
+                        )
+                      }
+                    >
+                      Accept
+                    </Button>
+
+                    <Button
+                      variant="danger"
+                      onClick={() =>
+                        handleStatusUpdate(
+                          proposal._id,
+                          "rejected"
+                        )
+                      }
+                    >
+                      Reject
+                    </Button>
+
+                  </div>
+                )}
               </Card>
             )
           )}
-
         </div>
-
       )}
-
     </PageContainer>
   );
 };

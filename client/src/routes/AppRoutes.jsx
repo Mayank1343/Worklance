@@ -141,7 +141,7 @@ const AppRoutes = () => {
       <Route
         path="/my-proposals"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute roles={["freelancer"]}>
             <DashboardLayout>
               <MyProposals />
             </DashboardLayout>
@@ -150,9 +150,9 @@ const AppRoutes = () => {
       />
       
       <Route
-        path="/client-proposals"
+        path="/proposals"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute roles={["client"]}>
             <DashboardLayout>
               <ClientProposals />
             </DashboardLayout>

@@ -8,39 +8,35 @@ export const freelancerLinks = [
     path: "/projects"
   },
   {
-    label: "Proposals",
-    path: "/proposals"
+  label: "My Proposals",
+  path: "/my-proposals",
   },
   {
     label: "Profile",
     path: "/profile"
-  },
-  {
-  label: "My Proposals",
-  path: "/my-proposals",
 },
 ];
 
 export const clientLinks = [
   {
     label: "Dashboard",
-    path: "/dashboard"
+    path: "/dashboard",
   },
   {
     label: "My Projects",
-    path: "/projects"
+    path: "/projects",
   },
   {
     label: "Create Project",
-    path: "/projects/create"
-  },
-  {
-    label: "Profile",
-    path: "/profile"
+    path: "/projects/create",
   },
   {
     label: "Received Proposals",
-    path: "/client-proposals",
+    path: "/proposals",
+  },
+  {
+    label: "Profile",
+    path: "/profile",
   },
 ];
 

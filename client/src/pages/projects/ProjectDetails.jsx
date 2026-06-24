@@ -221,6 +221,10 @@ return (
       </Card>
     )}
 
+    toast.success(
+      "Proposal submitted"
+    );
+
     {/* Main Project Card */}
     <Card className="p-8 rounded-2xl shadow-sm">
 
@@ -392,6 +396,9 @@ return (
                 Mark Completed
               </button>
             )}
+            toast.success(
+              "Project marked completed"
+            );
 
             <button
               onClick={handleDelete}
@@ -406,6 +413,9 @@ return (
             >
               Delete
             </button>
+            toast.success(
+              "Project deleted"
+            );
           </>
         )}
 
@@ -500,6 +510,9 @@ return (
                       >
                         Accept
                       </Button>
+                      toast.success(
+                        "Proposal accepted"
+                      );
 
                       <Button
                         variant="danger"
@@ -512,6 +525,9 @@ return (
                       >
                         Reject
                       </Button>
+                      toast.success(
+                        "Proposal rejected"
+                      );
 
                     </div>
                   )}
