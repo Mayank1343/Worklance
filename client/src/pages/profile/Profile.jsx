@@ -48,9 +48,43 @@ const Profile = () => {
   if (!profile) {
     return (
       <PageContainer>
-        <Card>
-          No Profile Found
-        </Card>
+        <div className="max-w-3xl mx-auto">
+          <Card className="p-8 text-center">
+
+            <h2 className="text-2xl font-bold mb-3">
+              Complete Your Profile
+            </h2>
+
+            <p className="text-gray-500 mb-6">
+              Add your skills, bio and portfolio details
+              to start receiving projects.
+            </p>
+
+            <button
+              onClick={() => setIsEditing(true)}
+              className="
+                bg-blue-600
+                text-white
+                px-6
+                py-3
+                rounded-xl
+                hover:bg-blue-700
+              "
+            >
+              Create Profile
+            </button>
+
+          </Card>
+
+          {isEditing && (
+            <Card className="p-8 mt-6">
+              <EditProfile
+                profile={{}}
+                onSave={handleSave}
+              />
+            </Card>
+          )}
+        </div>
       </PageContainer>
     );
   }
