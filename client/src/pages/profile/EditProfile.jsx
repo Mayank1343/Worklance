@@ -16,6 +16,9 @@ const EditProfile = ({
         profile?.github || "",
       linkedin:
         profile?.linkedin || "",
+
+      skills:
+        profile?.skills?.join(", ") || "",
     });
 
   const handleChange = (e) => {
@@ -30,7 +33,14 @@ const EditProfile = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onSave(formData);
+    onSave({
+      ...formData,
+
+      skills: formData.skills
+        .split(",")
+        .map((skill) => skill.trim())
+        .filter(Boolean),
+    });
   };
 
   return (
@@ -83,6 +93,14 @@ const EditProfile = ({
         value={formData.linkedin}
         onChange={handleChange}
         placeholder="LinkedIn URL"
+        className="w-full border p-3 rounded"
+      />
+
+      <input
+        name="skills"
+        value={formData.skills}
+        onChange={handleChange}
+        placeholder="React, Node.js, MongoDB, Express"
         className="w-full border p-3 rounded"
       />
 

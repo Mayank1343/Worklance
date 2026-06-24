@@ -35,6 +35,7 @@ import {
 import {
   updateProposalStatus,
 } from "../../features/proposal/proposalSlice";
+import toast from "react-hot-toast";
 
   const ProjectDetails = () => {
   const { id } = useParams();
@@ -76,72 +77,83 @@ import {
     });
   };
 
-  const handleProposalSubmit =
-  async (e) => {
+  const handleProposalSubmit = async (e) => {
     e.preventDefault();
 
-    await dispatch(
+    const result = await dispatch(
       createProposal({
-        projectId:
-          selectedProject._id,
-
+        projectId: selectedProject._id,
         ...proposalData,
       })
     );
+
+    if (createProposal.fulfilled.match(result)) {
+      toast.success("Proposal submitted");
+
+      setProposalData({
+        coverLetter: "",
+        proposedBudget: "",
+      });
+    }
   };
 
-  const handleDelete =
-  async () => {
-
-    const confirmed =
-      window.confirm(
-        "Are you sure you want to delete this project?"
-      );
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this project?"
+    );
 
     if (!confirmed) return;
 
-    const resultAction =
-      await dispatch(
-        deleteProject(
-          selectedProject._id
-        )
-      );
+    const resultAction = await dispatch(
+      deleteProject(selectedProject._id)
+    );
 
     if (
-      deleteProject.fulfilled.match(
-        resultAction
-      )
+      deleteProject.fulfilled.match(resultAction)
     ) {
+      toast.success("Project deleted");
       navigate("/projects");
     }
   };
 
-  const handleStatusUpdate =
-  async (
+  const handleStatusUpdate = async (
     proposalId,
     status
   ) => {
-
-    await dispatch(
+    const result = await dispatch(
       updateProposalStatus({
         proposalId,
         status,
       })
     );
 
+    if (
+      updateProposalStatus.fulfilled.match(
+        result
+      )
+    ) {
+      toast.success(
+        `Proposal ${status}`
+      );
+    }
+
     dispatch(
       getProjectProposals(id)
     );
   };
 
-  const handleComplete =
-  async () => {
-
-    await dispatch(
-      completeProject(
-        selectedProject._id
-      )
+  const handleComplete = async () => {
+    const result = await dispatch(
+      completeProject(selectedProject._id)
     );
+
+    if (
+      completeProject.fulfilled.match(result)
+    ) {
+      toast.success(
+        "Project marked completed"
+      );
+    }
   };
 
   useEffect(() => {
@@ -220,10 +232,6 @@ return (
         </form>
       </Card>
     )}
-
-    toast.success(
-      "Proposal submitted"
-    );
 
     {/* Main Project Card */}
     <Card className="p-8 rounded-2xl shadow-sm">
@@ -396,9 +404,6 @@ return (
                 Mark Completed
               </button>
             )}
-            toast.success(
-              "Project marked completed"
-            );
 
             <button
               onClick={handleDelete}
@@ -413,9 +418,6 @@ return (
             >
               Delete
             </button>
-            toast.success(
-              "Project deleted"
-            );
           </>
         )}
 
@@ -510,9 +512,6 @@ return (
                       >
                         Accept
                       </Button>
-                      toast.success(
-                        "Proposal accepted"
-                      );
 
                       <Button
                         variant="danger"
@@ -525,9 +524,6 @@ return (
                       >
                         Reject
                       </Button>
-                      toast.success(
-                        "Proposal rejected"
-                      );
 
                     </div>
                   )}

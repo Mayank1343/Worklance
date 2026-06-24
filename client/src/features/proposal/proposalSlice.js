@@ -89,41 +89,83 @@ const proposalSlice = createSlice({
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(createProposal.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(createProposal.fulfilled, (state) => {
-        state.isLoading = false;
-        state.success = true;
-      })
-      .addCase(createProposal.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-      .addCase(getProjectProposals.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getProjectProposals.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.proposals = action.payload.proposals;
-      })
-      .addCase(getProjectProposals.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-      .addCase(updateProposalStatus.fulfilled, (state, action) => {
-        const updatedProposal = action.payload.proposal;
-        state.proposals = state.proposals.map((proposal) =>
-          proposal._id === updatedProposal._id ? updatedProposal : proposal
+extraReducers: (builder) => {
+  builder
+
+    // CREATE PROPOSAL
+    .addCase(createProposal.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(createProposal.fulfilled, (state) => {
+      state.isLoading = false;
+      state.success = true;
+    })
+    .addCase(createProposal.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    })
+
+    // GET PROJECT PROPOSALS
+    .addCase(getProjectProposals.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getProjectProposals.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.proposals = action.payload.proposals;
+    })
+    .addCase(getProjectProposals.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    })
+
+    // GET MY PROPOSALS
+    .addCase(getMyProposals.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getMyProposals.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.proposals = action.payload.proposals;
+    })
+    .addCase(getMyProposals.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    })
+
+    // GET CLIENT PROPOSALS
+    .addCase(getClientProposals.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getClientProposals.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.clientProposals =
+        action.payload.proposals;
+    })
+    .addCase(getClientProposals.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    })
+
+    // UPDATE PROPOSAL STATUS
+    .addCase(updateProposalStatus.fulfilled, (state, action) => {
+      const updatedProposal =
+        action.payload.proposal;
+
+      state.proposals =
+        state.proposals.map((proposal) =>
+          proposal._id === updatedProposal._id
+            ? updatedProposal
+            : proposal
         );
-        state.clientProposals = state.clientProposals.map((proposal) =>
-          proposal._id === updatedProposal._id ? updatedProposal : proposal
+
+      state.clientProposals =
+        state.clientProposals.map((proposal) =>
+          proposal._id === updatedProposal._id
+            ? updatedProposal
+            : proposal
         );
-      });
-  },
+    });
+}
 });
 
 export const { resetProposalState } = proposalSlice.actions;
